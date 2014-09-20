@@ -1,16 +1,53 @@
 <div class="container">
   <div class="panel panel-default">
-    <div class="panel-heading">IVLE API Explorer</div>
+    <div class="panel-heading">
+      <h5>IVLE API Explorer</h5>
+    </div>
     <div class="panel-body">
       <div class="row">
+        <div class="col-md-12">
+          <button class="btn btn-default" ng-show="!initialized" ng-click="init()">Initialize</button>
+          <button class="btn btn-danger" ng-show="!loggedIn" ng-click="login()">Login</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label for="api-url" class="col-sm-1 control-label">API Key</label>
+          <div class="col-sm-11">
+            <input type="text" class="form-control" id="api-key" placeholder="API Key" ng-model="apiKey">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label for="api-url" class="col-sm-1 control-label">Access Token</label>
+          <div class="col-sm-11">
+            <input type="text" class="form-control" id="api-url" placeholder="Access Token" ng-model="accessToken">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <form class="form-horizontal" role="form">
+        <div class="form-group">
+          <label for="api-url" class="col-sm-1 control-label">GET</label>
+          <div class="col-sm-11">
+            <input type="url" class="form-control" id="api-url" placeholder="URL">
+          </div>
+        </div>
+      </div>
+      <hr>
+      <div class="row">
         <div class="col-md-3">
-          <button onclick="login()">Login</button>
-          <button onclick="logout()">Logout</button>
-          <button onclick="getModules()">Get Modules</button>
-          <button onclick="getTimetable()">Get Timetable</button>
-          <button onclick="getClassRoster()">Get Class Roster</button>
-          <button onclick="getGradebook()">Get Gradebook</button>
-          <button onclick="getGroups()">Get Groups</button>
+          <button class="btn btn-default" onclick="login()">Login</button>
+          <button class="btn btn-default" onclick="logout()">Logout</button>
+          <button class="btn btn-default" onclick="getModules()">Get Modules</button>
+          <button class="btn btn-default" onclick="getTimetable()">Get Timetable</button>
+          <button class="btn btn-default" onclick="getClassRoster()">Get Class Roster</button>
+          <button class="btn btn-default" onclick="getGradebook()">Get Gradebook</button>
+          <button class="btn btn-default" onclick="getGroups()">Get Groups</button>
         </div>
         <div class="col-md-9">
           <pre id="output"></pre>
