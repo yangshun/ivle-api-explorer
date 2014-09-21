@@ -3,23 +3,27 @@
 angular.module('ivleApiExplorerApp')
   .controller('MainCtrl', function ($scope, $timeout) {
     $scope.apiKey = 'O8ieVUFb72IU7feHcKmO3';
-    $scope.init = function () {
-      IVLE.init({
-        apiKey: $scope.apiKey,
-        callbackUrl: window.location.origin + window.location.pathname
-      });
-      $scope.initialized = IVLE.status().initialized;
-    };
 
     $scope.login = function () {
-      IVLE.login(function () {
-        $scope.loggedIn = IVLE.status().loggedIn;
+      IVLE.login({
+        apiKey: $scope.apiKey,
+        callbackUrl: window.location.origin + window.location.pathname
+      }, function () {
+        $scope.loggedIn = IVLE.isLoggedIn();
+        $scope.$apply();
       });
     };
 
+    $scope.logout = function () {
+      IVLE.logout(function (response) {
+        console.log('UI Logged out of IVLE!');
+        $scope.loggedIn = IVLE.isLoggedIn();
+        $scope.accessToken = '';
+      });
+    }
+
     IVLE.ready(function () {
-      $scope.initialized = IVLE.status().initialized;
-      $scope.loggedIn = IVLE.status().loggedIn;
+      $scope.loggedIn = IVLE.isLoggedIn();
       if ($scope.loggedIn) {
         $scope.accessToken = IVLE.getAccessToken();
       }
@@ -41,6 +45,14 @@ function logout () {
   });
 }
 
+function displayJSON (data) {
+  // var node = new PrettyJSON.view.Node({
+  //   el: $('#output'),
+  //   data: data
+  // });
+  $('#output').text(JSON.stringify(data, '', 2));
+}
+
 function getModules () {
     console.log('Getting modules');
     IVLE.api('Modules', {
@@ -48,7 +60,7 @@ function getModules () {
         IncludeAllInfo: false
     }, function (data) {
         console.log('Modules obtained');
-        $('#output').text(JSON.stringify(data, undefined, 2));
+        displayJSON(data);
     });
 }
 
@@ -58,7 +70,7 @@ function getTimetable () {
         AcadYear: '2014/2015',
         Semester: 1
     }, function (data) {
-        $('#output').text(JSON.stringify(data, undefined, 2));
+        displayJSON(data);
     });
 }
 
@@ -67,7 +79,7 @@ function getClassRoster () {
     IVLE.api('Class_Roster', {
         CourseID: '76a5d2c3-36c6-4ce2-86c4-3d17d3cd1412'
     }, function (data) {
-        $('#output').text(JSON.stringify(data, undefined, 2));
+        displayJSON(data);
     });
 }
 
@@ -76,7 +88,7 @@ function getGradebook () {
     IVLE.api('Gradebook_ViewItems', {
         CourseID: '76a5d2c3-36c6-4ce2-86c4-3d17d3cd1412'
     }, function (data) {
-        $('#output').text(JSON.stringify(data, undefined, 2));
+        displayJSON(data);
     });
 }
 
@@ -87,6 +99,6 @@ function getGroups () {
         AcadYear: '2014/2015',
         Semester: 1
     }, function (data) {
-        $('#output').text(JSON.stringify(data, undefined, 2));
+        displayJSON(data);
     });
 }  
